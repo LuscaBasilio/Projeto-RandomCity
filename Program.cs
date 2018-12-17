@@ -1,4 +1,5 @@
 ﻿using System;
+using Cidadezinha.Classes.Controladores;
 
 namespace Cidadezinha
 {
@@ -6,7 +7,10 @@ namespace Cidadezinha
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            do{
+                
+                Tempo.PularTempo();
+            }while(Cidade.Populacao > 0);
         }
     }
 }

@@ -8,5 +8,9 @@ namespace Cidadezinha.Classes.Controladores
         public static int Populacao;
         public static int AguaTotal, ComidaTotal, EnergiaTotal;
         public static int AguaAtual, ComidaAtual, EnergiaAtual;
+
+        public static void GerarCidade(int populacao){
+            
+        }
     }
 }
