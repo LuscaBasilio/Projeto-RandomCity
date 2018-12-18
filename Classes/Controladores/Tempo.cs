@@ -8,6 +8,9 @@ namespace Cidadezinha.Classes.Controladores
         public static DateTime DataAtual = DateTime.Parse("23/04/1990");
         public static Timeskip Pulos = Timeskip.Mes;
 
+        /// <summary>
+        /// Pula uma quantidade de tempo apos um grupo de acontecimentos
+        /// </summary>
         public static void PularTempo(){
             switch(Pulos){
                 case Timeskip.Ano:

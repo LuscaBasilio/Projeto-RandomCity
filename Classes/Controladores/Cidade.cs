@@ -1,15 +1,23 @@
 using System.Collections.Generic;
+using Cidadezinha.Classes.Instancias;
 
 namespace Cidadezinha.Classes.Controladores
 {
-    public static class Cidade
+    public class Cidade
     {
-        public static int Populacao;
-        public static int AguaTotal, ComidaTotal, EnergiaTotal;
-        public static int AguaAtual, ComidaAtual, EnergiaAtual;
+        public List<Pessoa> Populacao;
+        public float AguaTotal, ComidaTotal, EnergiaTotal;
+        public float AguaAtual, ComidaAtual, EnergiaAtual;
 
-        public static void GerarCidade(int populacao){
-            
+        public Cidade(int populacao){
+            for (int i = 0; i < populacao; i++)
+            {
+                Populacao.Add(new Pessoa());
+            }
+        }
+
+        public void CalcularGastos(){
+
         }
     }
 }

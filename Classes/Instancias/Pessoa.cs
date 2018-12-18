@@ -4,6 +4,7 @@ using Cidadezinha.Classes.Controladores;
 using Cidadezinha.Classes.Enums;
 using Cidadezinha.Classes.Geradores;
 using Cidadezinha.Classes.Profissão;
+using Projeto_RandomCity.Classes.Geradores;
 
 namespace Cidadezinha.Classes.Instancias
 {
@@ -25,11 +26,13 @@ namespace Cidadezinha.Classes.Instancias
         public int Felicidade;//-100 | 100
         public Profissao Profissao_;
         public int Conduta; // -100 | 100
-        public Dictionary<int,Relacionamento> Relacionamentos;
         public List<Pessoa> Filhos;
         public Pessoa Conjuge;
         #endregion
 
+        /// <summary>
+        /// Cria uma pessoa na fase adulta com todos os atributos aleatorios  
+        /// </summary>
         public Pessoa(){
             Random aleatorio = new Random();
 
@@ -37,20 +40,35 @@ namespace Cidadezinha.Classes.Instancias
             this.Sobrenome = "Sobrenome";
             this.Sexo_ = (Sexo)aleatorio.Next(1,3);
 
-            Idade = 23;
+            Idade = aleatorio.Next(18,30);
             DataNascimento = Tempo.DataAtual.AddYears(- Idade);
 
+            //status
             Fase_ = VerificarFase();
             Felicidade = aleatorio.Next(-100,100);
             Sorte = aleatorio.Next(-100,100);
-            Profissao_ = null;
             Conduta = aleatorio.Next(-100,100);
+            
+            Profissao_ = null;
+            //Relacionamento
             Pai = null;
             Mae = null;
             Conjuge = null;
             Filhos = new List<Pessoa>();
-        }
 
+            //Feedback
+            Acontecimentos.Nascimento(this);
+        }
+        
+        /// <summary>
+        /// Cria uma pessoa no inicio de sua vida  
+        /// Todos os atributos padrões 
+        /// </summary>
+        /// <param name="Nome"></param>
+        /// <param name="SobreNome"></param>
+        /// <param name="Sexo_"></param>
+        /// <param name="Pai"></param>
+        /// <param name="Mae"></param>
         public Pessoa(string Nome,string SobreNome,Sexo Sexo_,Pessoa Pai,Pessoa Mae){
             this.Nome = Nome;
             this.Sobrenome = new Random().Next(1,3) == 1? Pai.Sobrenome : Mae.Sobrenome;
@@ -61,12 +79,16 @@ namespace Cidadezinha.Classes.Instancias
 
             Idade = 0;
             Fase_ = VerificarFase();
+            
             Felicidade = 0;
             Sorte = 0;
-            Profissao_ = null;
             Conduta = 0;
+            Profissao_ = null;
+            
             Filhos = new List<Pessoa>();
             Conjuge = null;
+
+            Acontecimentos.Nascimento(this);
         }
         /// <summary>
         /// Verifica a fase atual da Pessoa
@@ -95,7 +117,7 @@ namespace Cidadezinha.Classes.Instancias
         /// Mata a instancia
         /// </summary>
         public void Morte(){
-
+            
             Vivo = false;
         }
 

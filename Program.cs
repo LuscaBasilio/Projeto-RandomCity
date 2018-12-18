@@ -7,10 +7,12 @@ namespace Cidadezinha
     {
         static void Main(string[] args)
         {
+            Cidade NomeDaCidade = new Cidade(10);
+
             do{
                 
                 Tempo.PularTempo();
-            }while(Cidade.Populacao > 0);
+            }while(NomeDaCidade.Populacao.Count > 0);
         }
     }
 }
