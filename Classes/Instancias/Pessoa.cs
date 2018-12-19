@@ -36,12 +36,12 @@ namespace Cidadezinha.Classes.Instancias
         public Pessoa(){
             Random aleatorio = new Random();
 
-            this.Nome = "Nome";
-            this.Sobrenome = "Sobrenome";
+            this.Nome = "[Nome]";
+            this.Sobrenome = "[Sobrenome]";
             this.Sexo_ = (Sexo)aleatorio.Next(1,3);
 
             Idade = aleatorio.Next(18,30);
-            DataNascimento = Tempo.DataAtual.AddYears(- Idade);
+            DataNascimento = Tempo.DataAtual.AddYears(- Idade).AddMonths(aleatorio.Next(-12,12)).AddDays(aleatorio.Next(-30,30));
 
             //status
             Fase_ = VerificarFase();

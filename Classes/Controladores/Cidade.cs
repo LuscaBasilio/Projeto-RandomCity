@@ -10,6 +10,7 @@ namespace Cidadezinha.Classes.Controladores
         public float AguaAtual, ComidaAtual, EnergiaAtual;
 
         public Cidade(int populacao){
+            Populacao = new List<Pessoa>();
             for (int i = 0; i < populacao; i++)
             {
                 Populacao.Add(new Pessoa());

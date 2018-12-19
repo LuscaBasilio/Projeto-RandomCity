@@ -1,5 +1,6 @@
 ﻿using System;
 using Cidadezinha.Classes.Controladores;
+using Projeto_RandomCity.Classes.Views;
 
 namespace Cidadezinha
 {
@@ -10,7 +11,7 @@ namespace Cidadezinha
             Cidade NomeDaCidade = new Cidade(10);
 
             do{
-                
+                ViewController.MostrarAcontecimentos();
                 Tempo.PularTempo();
             }while(NomeDaCidade.Populacao.Count > 0);
         }

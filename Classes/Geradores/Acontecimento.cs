@@ -7,7 +7,7 @@ namespace Projeto_RandomCity.Classes.Geradores
     public static class Acontecimentos
     {
         public static void Nascimento(Pessoa pessoa){
-            ViewController.Resumo.Add($"{pessoa.Nome} nasceu no dia {pessoa.DataNascimento}");
+            ViewController.Resumo.Add($"{pessoa.Nome} {pessoa.Sobrenome} nasceu no dia {pessoa.DataNascimento.ToShortDateString()}");
         }
     }
 }
