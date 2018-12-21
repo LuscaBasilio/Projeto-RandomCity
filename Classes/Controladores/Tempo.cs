@@ -27,14 +27,12 @@ namespace Cidadezinha.Classes.Controladores
             }
         }
 
-        public static void Envelhecer(Cidade cidade){
-            foreach (Pessoa pessoa in cidade.Populacao)
+        public static void Envelhecer(){
+            foreach (Pessoa pessoa in Cidade.Pessoas.Populacao)
             {
-                if(DataAtual.Year - pessoa.Idade > pessoa.DataNascimento.Year){
-                    if(DataAtual.Month >= pessoa.DataNascimento.Month && DataAtual.Day >= pessoa.DataNascimento.Day){
-                        pessoa.Envelhecer();
-                        ViewController.Resumo.Add($"{pessoa.Nome} {pessoa.Sobrenome} agora tem {pessoa.Idade} anos");
-                    }
+                if(DataAtual.Year - pessoa.Idade > pessoa.DataNascimento.Year && DataAtual.Month >= pessoa.DataNascimento.Month && DataAtual.Day >= pessoa.DataNascimento.Day){
+                    pessoa.Envelhecer();
+                    ViewController.Resumo.Add($"{pessoa.Nome} {pessoa.Sobrenome} agora tem {pessoa.Idade} anos");
                 }
             }
         }

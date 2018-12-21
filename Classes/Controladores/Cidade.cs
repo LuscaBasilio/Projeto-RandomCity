@@ -1,24 +1,30 @@
 using System.Collections.Generic;
+using System.IO;
 using Cidadezinha.Classes.Instancias;
+using Projeto_RandomCity.Classes.BancoDeDados;
 
 namespace Cidadezinha.Classes.Controladores
 {
     public class Cidade
     {
-        public List<Pessoa> Populacao;
-        public float AguaTotal, ComidaTotal, EnergiaTotal;
-        public float AguaAtual, ComidaAtual, EnergiaAtual;
+        public static PessoaDataBase Pessoas = new PessoaDataBase();
+        public float AguaTotal;
+        public float ComidaTotal;
+        public float EnergiaTotal;
+        public float AguaAtual;
+        public float ComidaAtual;
+        public float EnergiaAtual;
 
-        public Cidade(int populacao){
-            Populacao = new List<Pessoa>();
-            for (int i = 0; i < populacao; i++)
-            {
-                Populacao.Add(new Pessoa());
-            }
+        public Cidade(){
+            AguaTotal = 10;
+            ComidaTotal = 10;
+            EnergiaTotal = 10;
         }
+
 
         public void CalcularGastos(){
 
         }
+        
     }
 }

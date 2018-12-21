@@ -8,15 +8,60 @@ using Projeto_RandomCity.Classes.Geradores;
 
 namespace Cidadezinha.Classes.Instancias
 {
+    [Serializable]
     public class Pessoa
     {  
         #region Imutavel
-        public readonly string Nome , Sobrenome;
+        /// <summary>
+        /// [IMUTAVEL]  
+        /// Define o ID da pessoa  
+        /// É usado para a mesma ser identificada pelas outras pessoas
+        /// </summary>
+        public readonly int ID;
+        /// <summary>
+        /// [IMUTAVEL]  
+        /// Nome da Pessoa      
+        /// Gerado aleatoriamente
+        /// </summary>
+        public readonly string Nome;
+        /// <summary>
+        /// [IMUTAVEL]  
+        /// Sobrenome da pessoa  
+        /// Definido pelo sobrenome do pai ou da mãe (50/50)
+        /// </summary>
+        public readonly string Sobrenome;
+        /// <summary>
+        /// [IMUTAVEL]  
+        /// Define a data de nascimento da Pessoa
+        /// </summary>
         public readonly DateTime DataNascimento;
+        /// <summary>
+        /// [IMUTAVEL]  
+        /// Define a data de obito da Pessoa
+        /// </summary>
         public DateTime DataObito;
+        /// <summary>
+        /// [IMUTAVEL]  
+        /// Define o genero da Pessoa  
+        /// Apenas masculino e Feminino  
+        /// XX E XXtentação ;-;
+        /// </summary>
         public readonly Sexo Sexo_;
-        public readonly Pessoa Pai ,Mae;
+        /// <summary>
+        /// [IMUTAVEL]  
+        /// Define o Pai da Pessoa  
+        /// </summary>
+        public readonly int IDPai;
+        /// <summary>
+        /// [IMUTAVEL]  
+        /// Define a Mae da Pessoa
+        /// </summary>
+        public readonly int IDMae;
 
+        /// <summary>
+        /// Banco de dados para todas as pessoas  
+        /// Onde é retirado todos os nomes aleatorios  
+        /// </summary>
         public static NomeDataBase nomes = new NomeDataBase();
         #endregion
 
@@ -31,14 +76,14 @@ namespace Cidadezinha.Classes.Instancias
         public int Felicidade;//-100 | 100
         public Profissao Profissao_;
         public int Conduta; // -100 | 100
-        public List<Pessoa> Filhos;
-        public Pessoa Conjuge;
+        public List<int> Filhos;
+        public int IDConjuge;
         #endregion
 
         /// <summary>
         /// Cria uma pessoa na fase adulta com todos os atributos aleatorios  
         /// </summary>
-        public Pessoa(){
+        public Pessoa(int ID){
             Random aleatorio = new Random();
 
             this.Sexo_ = (Sexo)aleatorio.Next(1,3);
@@ -53,13 +98,14 @@ namespace Cidadezinha.Classes.Instancias
             Felicidade = aleatorio.Next(-100,100);
             Sorte = aleatorio.Next(-100,100);
             Conduta = aleatorio.Next(-100,100);
+            Vivo = true;
             
             Profissao_ = null;
             //Relacionamento
-            Pai = null;
-            Mae = null;
-            Conjuge = null;
-            Filhos = new List<Pessoa>();
+            IDPai = -1;
+            IDMae = -1;
+            IDConjuge = -1;
+            Filhos = new List<int>();
 
             //Feedback
             Acontecimentos.Nascimento(this);
@@ -78,8 +124,8 @@ namespace Cidadezinha.Classes.Instancias
             this.Nome = Nome;
             this.Sobrenome = new Random().Next(1,3) == 1? Pai.Sobrenome : Mae.Sobrenome;
             this.Sexo_ = Sexo_;
-            this.Pai = Pai;
-            this.Mae = Mae;
+            this.IDPai = Pai.ID;
+            this.IDMae = Mae.ID;
             DataNascimento = Tempo.DataAtual;
 
             Idade = 0;
@@ -89,9 +135,10 @@ namespace Cidadezinha.Classes.Instancias
             Sorte = 0;
             Conduta = 0;
             Profissao_ = null;
+            Vivo = true;
             
-            Filhos = new List<Pessoa>();
-            Conjuge = null;
+            Filhos = new List<int>();
+            IDConjuge = -1;
 
             Acontecimentos.Nascimento(this);
         }
@@ -127,7 +174,6 @@ namespace Cidadezinha.Classes.Instancias
         /// Mata a instancia
         /// </summary>
         public void Morte(){
-            
             Vivo = false;
         }
 
@@ -145,8 +191,7 @@ namespace Cidadezinha.Classes.Instancias
             string filhoSobreNome = new Random().Next(1,3) == 1? this.Sobrenome:outro.Sobrenome ;
 
             Filho = new Pessoa(filhoNome,filhoSobreNome,filhoGenero,this,outro);
-            Filhos.Add(Filho);
-            
+            Filhos.Add(Filho.ID);
         }
     
 
