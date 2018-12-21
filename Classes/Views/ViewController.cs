@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Cidadezinha.Classes.Controladores;
 
 namespace Projeto_RandomCity.Classes.Views
 {
@@ -19,6 +20,7 @@ namespace Projeto_RandomCity.Classes.Views
             {
                 Console.WriteLine(item);
             }
+            Console.WriteLine("Data atual : " + Tempo.DataAtual.ToShortDateString());
             Resumo = new List<string>();
         }
     }

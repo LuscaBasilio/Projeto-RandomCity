@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Cidadezinha.Classes.BancoDeDados;
 using Cidadezinha.Classes.Controladores;
 using Cidadezinha.Classes.Enums;
-using Cidadezinha.Classes.Geradores;
 using Cidadezinha.Classes.Profissão;
 using Projeto_RandomCity.Classes.Geradores;
 
@@ -16,6 +16,8 @@ namespace Cidadezinha.Classes.Instancias
         public DateTime DataObito;
         public readonly Sexo Sexo_;
         public readonly Pessoa Pai ,Mae;
+
+        public static NomeDataBase nomes = new NomeDataBase();
         #endregion
 
         #region Mutavel
@@ -36,9 +38,9 @@ namespace Cidadezinha.Classes.Instancias
         public Pessoa(){
             Random aleatorio = new Random();
 
-            this.Nome = "[Nome]";
-            this.Sobrenome = "[Sobrenome]";
             this.Sexo_ = (Sexo)aleatorio.Next(1,3);
+            this.Nome = nomes.PegarAleatorio(this.Sexo_);
+            this.Sobrenome = nomes.PegarAleatorio();
 
             Idade = aleatorio.Next(18,30);
             DataNascimento = Tempo.DataAtual.AddYears(- Idade).AddMonths(aleatorio.Next(-12,12)).AddDays(aleatorio.Next(-30,30));
@@ -131,7 +133,7 @@ namespace Cidadezinha.Classes.Instancias
 
             //DADOS
             Sexo filhoGenero = chance > 49 ? Sexo.Masculino:Sexo.Feminino ;           
-            string filhoNome = GeradorString.ReturnNome(filhoGenero);
+            string filhoNome = "";
             string filhoSobreNome = new Random().Next(1,3) == 1? this.Sobrenome:outro.Sobrenome ;
 
             Filho = new Pessoa(filhoNome,filhoSobreNome,filhoGenero,this,outro);

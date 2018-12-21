@@ -1,5 +1,6 @@
 using System;
 using Cidadezinha.Classes.Enums;
+using Cidadezinha.Classes.Instancias;
 
 namespace Cidadezinha.Classes.Controladores
 {
@@ -9,19 +10,26 @@ namespace Cidadezinha.Classes.Controladores
         public static Timeskip Pulos = Timeskip.Mes;
 
         /// <summary>
-        /// Pula uma quantidade de tempo apos um grupo de acontecimentos
+        /// Pula uma quantidade de tempo apos um grupo de acontecimentos  
         /// </summary>
         public static void PularTempo(){
             switch(Pulos){
                 case Timeskip.Ano:
-                    DataAtual.AddYears(1);
+                    DataAtual = DataAtual.AddYears(1);
                     break;
                 case Timeskip.Dia:
-                    DataAtual.AddDays(1);
+                    DataAtual = DataAtual.AddDays(1);
                     break;
                 default:
-                    DataAtual.AddMonths(1);
+                    DataAtual = DataAtual.AddMonths(1);
                     break;
+            }
+        }
+
+        public static void Envelhecer(Cidade cidade){
+            foreach (Pessoa item in cidade.Populacao)
+            {
+                
             }
         }
     }

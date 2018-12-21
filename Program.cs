@@ -13,6 +13,8 @@ namespace Cidadezinha
             do{
                 ViewController.MostrarAcontecimentos();
                 Tempo.PularTempo();
+                Tempo.Envelhecer(NomeDaCidade);
+                Console.ReadKey();
             }while(NomeDaCidade.Populacao.Count > 0);
         }
     }
