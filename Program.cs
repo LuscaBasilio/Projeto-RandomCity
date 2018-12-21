@@ -6,14 +6,13 @@ namespace Cidadezinha
 {
     class Program
     {
+        private static Cidade NomeDaCidade = new Cidade(10);
         static void Main(string[] args)
         {
-            Cidade NomeDaCidade = new Cidade(10);
-
             do{
+                Tempo.Envelhecer(NomeDaCidade);
                 ViewController.MostrarAcontecimentos();
                 Tempo.PularTempo();
-                Tempo.Envelhecer(NomeDaCidade);
                 Console.ReadKey();
             }while(NomeDaCidade.Populacao.Count > 0);
         }

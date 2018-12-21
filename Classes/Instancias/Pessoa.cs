@@ -21,7 +21,10 @@ namespace Cidadezinha.Classes.Instancias
         #endregion
 
         #region Mutavel
-        public int Idade;
+        public int Idade {
+            get;
+            private set;
+        }
         public Fase Fase_;
         public bool Vivo;
         public int Sorte;// -50 | 50
@@ -113,6 +116,11 @@ namespace Cidadezinha.Classes.Instancias
 
             return Fase.Infancia;
             
+        }
+
+        public void Envelhecer(){
+            Idade ++;
+            Fase_ = VerificarFase();
         }
 
         /// <summary>

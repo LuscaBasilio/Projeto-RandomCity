@@ -1,6 +1,7 @@
 using System;
 using Cidadezinha.Classes.Enums;
 using Cidadezinha.Classes.Instancias;
+using Projeto_RandomCity.Classes.Views;
 
 namespace Cidadezinha.Classes.Controladores
 {
@@ -27,9 +28,14 @@ namespace Cidadezinha.Classes.Controladores
         }
 
         public static void Envelhecer(Cidade cidade){
-            foreach (Pessoa item in cidade.Populacao)
+            foreach (Pessoa pessoa in cidade.Populacao)
             {
-                
+                if(DataAtual.Year - pessoa.Idade > pessoa.DataNascimento.Year){
+                    if(DataAtual.Month >= pessoa.DataNascimento.Month && DataAtual.Day >= pessoa.DataNascimento.Day){
+                        pessoa.Envelhecer();
+                        ViewController.Resumo.Add($"{pessoa.Nome} {pessoa.Sobrenome} agora tem {pessoa.Idade} anos");
+                    }
+                }
             }
         }
     }
