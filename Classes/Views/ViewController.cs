@@ -20,7 +20,7 @@ namespace Projeto_RandomCity.Classes.Views
             {
                 Console.WriteLine(item);
             }
-            Console.WriteLine("Data atual : " + Tempo.DataAtual.ToShortDateString());
+            Console.WriteLine("Data atual : " + Tempo.DataAtual.ToShortDateString() + "\n");
             Resumo = new List<string>();
         }
     }

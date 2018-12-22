@@ -168,6 +168,7 @@ namespace Cidadezinha.Classes.Instancias
         public void Envelhecer(){
             Idade ++;
             Fase_ = VerificarFase();
+            Acontecimentos.Envelhecer(this);
         }
 
         /// <summary>

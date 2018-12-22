@@ -8,7 +8,7 @@ namespace Cidadezinha.Classes.Controladores
     public static class Tempo
     {
         public static DateTime DataAtual = DateTime.Parse("23/04/1990");
-        public static Timeskip Pulos = Timeskip.Mes;
+        public static Timeskip Pulos = Timeskip.Ano;
 
         /// <summary>
         /// Pula uma quantidade de tempo apos um grupo de acontecimentos  
@@ -28,11 +28,21 @@ namespace Cidadezinha.Classes.Controladores
         }
 
         public static void Envelhecer(){
+            /* Exemplo : 
+            ** Data atual       : 23/04/1990
+            ** Data nascimento  : 20/03/1960 (29 anos)
+            **/
             foreach (Pessoa pessoa in Cidade.Pessoas.Populacao)
-            {
-                if(DataAtual.Year - pessoa.Idade > pessoa.DataNascimento.Year && DataAtual.Month >= pessoa.DataNascimento.Month && DataAtual.Day >= pessoa.DataNascimento.Day){
+            {   // 1990 - 29 > 1960
+                if(DataAtual.Year - pessoa.Idade > pessoa.DataNascimento.Year){
                     pessoa.Envelhecer();
-                    ViewController.Resumo.Add($"{pessoa.Nome} {pessoa.Sobrenome} agora tem {pessoa.Idade} anos");
+                //1990
+                }else if (DataAtual.Year - pessoa.Idade == pessoa.DataNascimento.Year){
+                    if(DataAtual.Month < pessoa.DataNascimento.Month){
+                        pessoa.Envelhecer();
+                    }else if(DataAtual.Month == pessoa.DataNascimento.Month && DataAtual.Day < pessoa.DataNascimento.Day){
+                        pessoa.Envelhecer();
+                    }
                 }
             }
         }

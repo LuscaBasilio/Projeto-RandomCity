@@ -9,5 +9,8 @@ namespace Projeto_RandomCity.Classes.Geradores
         public static void Nascimento(Pessoa pessoa){
             ViewController.Resumo.Add($"{pessoa.Nome} {pessoa.Sobrenome} nasceu no dia {pessoa.DataNascimento.ToShortDateString()}");
         }
+        public static void Envelhecer(Pessoa pessoa){
+            ViewController.Resumo.Add($"{pessoa.Nome} {pessoa.Sobrenome} agora tem {pessoa.Idade} anos");
+        }
     }
 }
