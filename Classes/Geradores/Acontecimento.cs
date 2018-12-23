@@ -12,5 +12,9 @@ namespace Projeto_RandomCity.Classes.Geradores
         public static void Envelhecer(Pessoa pessoa){
             ViewController.Resumo.Add($"{pessoa.Nome} {pessoa.Sobrenome} agora tem {pessoa.Idade} anos");
         }
+
+        public static void Acasalar(Pessoa pessoa,Pessoa par){
+            ViewController.Resumo.Add($"");
+        }
     }
 }

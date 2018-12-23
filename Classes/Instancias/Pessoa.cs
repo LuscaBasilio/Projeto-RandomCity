@@ -70,14 +70,43 @@ namespace Cidadezinha.Classes.Instancias
             get;
             private set;
         }
-        public Fase Fase_;
-        public bool Vivo;
-        public int Sorte;// -50 | 50
-        public int Felicidade;//-100 | 100
-        public Profissao Profissao_;
-        public int Conduta; // -100 | 100
-        public List<int> Filhos;
-        public int IDConjuge;
+        public Fase Fase_{
+            get;
+            private set;
+        }
+        public bool Vivo{
+            get;
+            set;
+        }
+        public int Sorte{
+            get;
+            set;
+        }
+        public int Felicidade{
+            get;
+            set;
+        }
+        public Profissao Profissao_{
+            get;
+            set;
+        }
+        public int Conduta{
+            get;
+            set;
+        }
+        public List<int> Filhos{
+            get;
+            set;
+        }
+        /// <summary>
+        /// Todos os relacionamentos aqui da pessoa são salvos aqui  
+        /// int = id da pessoa  
+        /// string = nivel de relacionamento
+        /// </summary>
+        public Dictionary<int,string> Relacionamentos{
+            get;
+            set;
+        }
         #endregion
 
         /// <summary>
@@ -104,7 +133,6 @@ namespace Cidadezinha.Classes.Instancias
             //Relacionamento
             IDPai = -1;
             IDMae = -1;
-            IDConjuge = -1;
             Filhos = new List<int>();
 
             //Feedback
@@ -138,7 +166,6 @@ namespace Cidadezinha.Classes.Instancias
             Vivo = true;
             
             Filhos = new List<int>();
-            IDConjuge = -1;
 
             Acontecimentos.Nascimento(this);
         }
@@ -178,21 +205,22 @@ namespace Cidadezinha.Classes.Instancias
             Vivo = false;
         }
 
-        public void Acasalar(Pessoa outro){
+        public static void Acasalar(Pessoa pessoa,Pessoa par){
             //RANDOM
             Random random = new Random();
-            int chance = random.Next(0,100);
-
             //crianço
             Pessoa Filho = null;
 
             //DADOS
-            Sexo filhoGenero = chance > 49 ? Sexo.Masculino:Sexo.Feminino ;           
+            Sexo filhoGenero = random.Next(0,100) > 49 ? Sexo.Masculino:Sexo.Feminino ;           
             string filhoNome = "";
-            string filhoSobreNome = new Random().Next(1,3) == 1? this.Sobrenome:outro.Sobrenome ;
+            string filhoSobreNome = random.Next(1,3) == 1? pessoa.Sobrenome:par.Sobrenome ;
 
-            Filho = new Pessoa(filhoNome,filhoSobreNome,filhoGenero,this,outro);
-            Filhos.Add(Filho.ID);
+            Filho = new Pessoa(filhoNome,filhoSobreNome,filhoGenero,pessoa,par);
+
+            pessoa.Filhos.Add(Filho.ID);
+            par.Filhos.Add(Filho.ID);
+            
         }
     
 
