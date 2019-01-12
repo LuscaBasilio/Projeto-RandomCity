@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Cidadezinha.Classes.Controladores;
 
-namespace Projeto_RandomCity.Classes.Views
+namespace Cidadezinha.Classes.Views
 {
     /// <summary>
     /// Classe onde ficará qualquer interação com a tela

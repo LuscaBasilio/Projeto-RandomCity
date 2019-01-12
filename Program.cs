@@ -1,6 +1,6 @@
 ﻿using System;
 using Cidadezinha.Classes.Controladores;
-using Projeto_RandomCity.Classes.Views;
+using Cidadezinha.Classes.Views;
 
 namespace Cidadezinha
 {
@@ -14,7 +14,7 @@ namespace Cidadezinha
                 ViewController.MostrarAcontecimentos();
                 Tempo.PularTempo();
                 Console.ReadKey();
-            }while(Cidade.Pessoas.Populacao.Count > 0);
+            }while(Cidade.Pessoas.Quantidade() > 0);
         }
     }
 }
