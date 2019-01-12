@@ -4,7 +4,7 @@ using Cidadezinha.Classes.BancoDeDados;
 using Cidadezinha.Classes.Controladores;
 using Cidadezinha.Classes.Enums;
 using Cidadezinha.Classes.Profissão;
-using Projeto_RandomCity.Classes.Geradores;
+using Cidadezinha.Classes.Geradores;
 
 namespace Cidadezinha.Classes.Instancias
 {
@@ -66,6 +66,13 @@ namespace Cidadezinha.Classes.Instancias
         #endregion
 
         #region Mutavel
+            
+            #region variaveis privadas 
+                private int felicidade;
+                private int sorte;
+                private int conduta;
+            #endregion
+        #region Propriedades
         public int Idade {
             get;
             private set;
@@ -78,19 +85,36 @@ namespace Cidadezinha.Classes.Instancias
             get;
             set;
         }
+        
         public int Sorte{
-            get;
-            set;
+            get{
+                return sorte;
+            }
+            set{
+                if(value > 50 || sorte < -50){
+                    value = 0;
+                }
+                sorte = value;
+            }
         }
+        
         public int Felicidade{
-            get;
-            set;
-        }
-        public Profissao Profissao_{
-            get;
-            set;
+            private get{
+                return felicidade;
+            }
+            set{
+                if(value > 1000 || value < -1000){
+                    value = 0;
+                }
+                felicidade = value;
+            }
         }
         public int Conduta{
+            private get;
+            set;
+        }
+
+        public Profissao Profissao_{
             get;
             set;
         }
@@ -98,14 +122,21 @@ namespace Cidadezinha.Classes.Instancias
             get;
             set;
         }
+        #endregion
+        /// <summary>
+        /// Define a longevidade da pessoa.....  
+        /// </summary>
+        public int Espectativa{
+            get;
+            private set;
+        }
         /// <summary>
         /// Todos os relacionamentos aqui da pessoa são salvos aqui  
-        /// int = id da pessoa  
-        /// string = nivel de relacionamento
+        /// ID da pessoa/nivel de relacionamento
         /// </summary>
-        public Dictionary<int,string> Relacionamentos{
+        public Dictionary<int,int> Relacionamentos{
             get;
-            set;
+            private set;
         }
         #endregion
 
@@ -127,6 +158,7 @@ namespace Cidadezinha.Classes.Instancias
             Felicidade = aleatorio.Next(-100,100);
             Sorte = aleatorio.Next(-100,100);
             Conduta = aleatorio.Next(-100,100);
+            Espectativa = aleatorio.Next(10,50);
             Vivo = true;
             
             Profissao_ = null;
@@ -143,29 +175,33 @@ namespace Cidadezinha.Classes.Instancias
         /// Cria uma pessoa no inicio de sua vida  
         /// Todos os atributos padrões 
         /// </summary>
-        /// <param name="Nome"></param>
-        /// <param name="SobreNome"></param>
-        /// <param name="Sexo_"></param>
-        /// <param name="Pai"></param>
-        /// <param name="Mae"></param>
-        public Pessoa(string Nome,string SobreNome,Sexo Sexo_,Pessoa Pai,Pessoa Mae){
+        /// <param name="Nome">Nome que será dado a criança</param>
+        /// <param name="Sexo_">Sexo da criança</param>
+        /// <param name="Pai">Instancia que é definida como pai da criança</param>
+        /// <param name="Mae">Instancia que é definida como mãe da criança</param>
+        public Pessoa(string Nome,Sexo Sexo_,Pessoa Pai,Pessoa Mae){
+            Random rdm = new Random();
             this.Nome = Nome;
-            this.Sobrenome = new Random().Next(1,3) == 1? Pai.Sobrenome : Mae.Sobrenome;
+            this.Sobrenome = rdm.Next(1,3) == 1? Pai.Sobrenome : Mae.Sobrenome;
             this.Sexo_ = Sexo_;
             this.IDPai = Pai.ID;
             this.IDMae = Mae.ID;
-            DataNascimento = Tempo.DataAtual;
+            this.DataNascimento = Tempo.DataAtual;
 
-            Idade = 0;
-            Fase_ = VerificarFase();
+            this.Idade = 0;
+            this.Fase_ = VerificarFase();
             
-            Felicidade = 0;
-            Sorte = 0;
-            Conduta = 0;
-            Profissao_ = null;
-            Vivo = true;
+            this.Felicidade = 0;
+            this.Sorte = 0;
+            this.Conduta = 0;
+            this.Espectativa = rdm.Next(55,103);
+            this.Profissao_ = null;
+            this.Vivo = true;
             
-            Filhos = new List<int>();
+            this.Filhos = new List<int>();
+
+            this.SetarRelacionamento(Pai.ID,rdm.Next(0,100));
+            this.SetarRelacionamento(Mae.ID,rdm.Next(0,100));
 
             Acontecimentos.Nascimento(this);
         }
@@ -181,27 +217,30 @@ namespace Cidadezinha.Classes.Instancias
                 return Fase.Adolescencia;
             }else if(Idade < 50){
                 return Fase.Adulto;
-            }else if(Idade < 103){
+            }else{
                 return Fase.Idoso;
-            }else if(Idade >= 103){
-                Vivo = false;
-                return Fase.Idoso;
-            }
-
-            return Fase.Infancia;
-            
+            }  
         }
 
         public void Envelhecer(){
             Idade ++;
-            Fase_ = VerificarFase();
-            Acontecimentos.Envelhecer(this);
+            Espectativa --;
+
+            if(Espectativa <= 0){
+                Morte();
+                Acontecimentos.Morte(this);
+            }else{
+                Fase_ = VerificarFase();
+                Acontecimentos.Envelhecer(this);
+            }
+            
         }
 
         /// <summary>
         /// Mata a instancia
         /// </summary>
         public void Morte(){
+            Fase_ = Fase.Morto;
             Vivo = false;
         }
 
@@ -214,16 +253,33 @@ namespace Cidadezinha.Classes.Instancias
             //DADOS
             Sexo filhoGenero = random.Next(0,100) > 49 ? Sexo.Masculino:Sexo.Feminino ;           
             string filhoNome = "";
-            string filhoSobreNome = random.Next(1,3) == 1? pessoa.Sobrenome:par.Sobrenome ;
 
-            Filho = new Pessoa(filhoNome,filhoSobreNome,filhoGenero,pessoa,par);
+            Filho = new Pessoa(filhoNome,filhoGenero,pessoa,par);
+
+            pessoa.SetarRelacionamento(Filho.ID,random.Next(0,100));
+            par.SetarRelacionamento(Filho.ID,random.Next(0,100));
 
             pessoa.Filhos.Add(Filho.ID);
             par.Filhos.Add(Filho.ID);
-            
         }
-    
 
+        public override bool Equals(object obj)
+        {
+            
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+            return true;
+        }
+        
+        
+        public override int GetHashCode()
+        {
+            throw new MissingMethodException(";-;") ;
+        }
+
+        public void SetarRelacionamento(int id, int valorInicial) => Relacionamentos[id] = valorInicial;
 
     }
 }

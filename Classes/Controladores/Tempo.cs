@@ -1,7 +1,7 @@
 using System;
 using Cidadezinha.Classes.Enums;
 using Cidadezinha.Classes.Instancias;
-using Projeto_RandomCity.Classes.Views;
+using Cidadezinha.Classes.Views;
 
 namespace Cidadezinha.Classes.Controladores
 {
@@ -33,15 +33,16 @@ namespace Cidadezinha.Classes.Controladores
             ** Data nascimento  : 20/03/1960 (29 anos)
             **/
             foreach (Pessoa pessoa in Cidade.Pessoas.Populacao)
-            {   // 1990 - 29 > 1960
-                if(DataAtual.Year - pessoa.Idade > pessoa.DataNascimento.Year){
-                    pessoa.Envelhecer();
-                //1990
-                }else if (DataAtual.Year - pessoa.Idade == pessoa.DataNascimento.Year){
-                    if(DataAtual.Month < pessoa.DataNascimento.Month){
+            {
+                if(pessoa.Vivo){
+                    if(DataAtual.Year - pessoa.Idade > pessoa.DataNascimento.Year){
                         pessoa.Envelhecer();
-                    }else if(DataAtual.Month == pessoa.DataNascimento.Month && DataAtual.Day < pessoa.DataNascimento.Day){
-                        pessoa.Envelhecer();
+                    }else if (DataAtual.Year - pessoa.Idade == pessoa.DataNascimento.Year){
+                        if(pessoa.DataNascimento.Month < DataAtual.Month){
+                            pessoa.Envelhecer();
+                        }else if(pessoa.DataNascimento.Month == DataAtual.Month && pessoa.DataNascimento.Day < DataAtual.Day){
+                            pessoa.Envelhecer();
+                        }
                     }
                 }
             }

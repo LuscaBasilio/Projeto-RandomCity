@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Cidadezinha.Classes.Instancias;
-using Projeto_RandomCity.Classes.BancoDeDados;
+using Cidadezinha.Classes.BancoDeDados;
 
 namespace Cidadezinha.Classes.Controladores
 {

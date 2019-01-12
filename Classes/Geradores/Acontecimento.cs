@@ -1,8 +1,8 @@
 using Cidadezinha.Classes.Controladores;
 using Cidadezinha.Classes.Instancias;
-using Projeto_RandomCity.Classes.Views;
+using Cidadezinha.Classes.Views;
 
-namespace Projeto_RandomCity.Classes.Geradores
+namespace Cidadezinha.Classes.Geradores
 {
     public static class Acontecimentos
     {
@@ -15,6 +15,9 @@ namespace Projeto_RandomCity.Classes.Geradores
 
         public static void Acasalar(Pessoa pessoa,Pessoa par){
             ViewController.Resumo.Add($"");
+        }
+        public static void Morte(Pessoa pessoa){
+            ViewController.Resumo.Add($"{pessoa.Nome} {pessoa.Sobrenome} morreu aos {pessoa.Idade} anos");
         }
     }
 }

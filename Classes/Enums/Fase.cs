@@ -5,6 +5,7 @@ namespace Cidadezinha.Classes.Enums
         Infancia = 1,
         Adolescencia = 2,
         Adulto = 3,
-        Idoso = 4
+        Idoso = 4,
+        Morto = 5
     }
 }
