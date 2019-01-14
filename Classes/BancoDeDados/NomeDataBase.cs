@@ -5,6 +5,9 @@ using Cidadezinha.Classes.Enums;
 
 namespace Cidadezinha.Classes.BancoDeDados
 {
+    /// <summary>
+    /// Classe onde é armazenado e manipulado qualquer dado sobre nome/sobrenome
+    /// </summary>
     public class NomeDataBase
     {
         /// <summary>
@@ -20,7 +23,7 @@ namespace Cidadezinha.Classes.BancoDeDados
         /// </summary>
         private const string CaminhoSobrenome = @"Database/Sobrenomes.txt";
 
-        public readonly List<string> ListaMasculino , ListaFeminino , ListaSobrenome;
+        private readonly List<string> ListaMasculino , ListaFeminino , ListaSobrenome;
 
         /// <summary>
         /// Construtor unico do NomeDatabase  
@@ -50,15 +53,12 @@ namespace Cidadezinha.Classes.BancoDeDados
             }
         }
         /// <summary>
-        /// Metodo uncio pra retornar um sobrenome aleatorio  
+        /// Metodo unico pra retornar um sobrenome aleatorio  
         /// Apenas usado pelos 10 primeiros cidadões gerados
         /// </summary>
         /// <returns>Retorna um sobrenome aleatorio</returns>
-        public string PegarAleatorio(){
-            System.Random rdm = new System.Random();
-            return ListaSobrenome.ToArray()[rdm.Next(0,ListaSobrenome.Count)];
-        }
-
+        public string PegarAleatorio() => ListaSobrenome.ToArray()[new System.Random().Next(0,ListaSobrenome.Count)];
+        
         /// <summary>
         /// Retorna uma lista de strings importadas de um arquivo.txt
         /// </summary>

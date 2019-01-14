@@ -1,7 +1,6 @@
 using System;
 using Cidadezinha.Classes.Enums;
 using Cidadezinha.Classes.Instancias;
-using Cidadezinha.Classes.Views;
 
 namespace Cidadezinha.Classes.Controladores
 {

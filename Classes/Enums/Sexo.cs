@@ -1,5 +1,5 @@
 namespace Cidadezinha.Classes.Enums
-{
+{  
     public enum Sexo
     {
         Masculino = 1,
