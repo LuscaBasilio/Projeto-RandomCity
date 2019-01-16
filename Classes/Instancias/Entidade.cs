@@ -88,9 +88,12 @@ namespace Cidadezinha.Classes.Instancias
         /// <param name="ID">ID da entidade</param>
         public Entidade(int ID){
             Random aleatorio = new Random();
+            this.ID = ID;
+            Idade = aleatorio.Next(18,30);    
             Sexo_ = (Sexo)aleatorio.Next(1,3);
             DataNascimento = Tempo.DataAtual.AddYears(- Idade).AddMonths(aleatorio.Next(-12,12)).AddDays(aleatorio.Next(-30,30));
             Vivo = true;
+            Fase_ = VerificarFase();
             IDPai = -1;
             IDMae = -1;
             Filhos = new List<int>();
@@ -115,7 +118,7 @@ namespace Cidadezinha.Classes.Instancias
 
             this.IDPai = pai.ID;
             this.IDMae = mae.ID;
-            Filhos = new List<int>();
+            this.Filhos = new List<int>();
         }
 
         public virtual void Envelhecer()
@@ -139,7 +142,15 @@ namespace Cidadezinha.Classes.Instancias
 
         public virtual Fase VerificarFase()
         {
-            throw new System.NotImplementedException();
+            if(Idade < 20){
+                return Fase.Infancia;
+            }else if(Idade < 40){
+                return Fase.Adolescencia;
+            }else if(Idade < 60){
+                return Fase.Adulto;
+            }else{
+                return Fase.Idoso;
+            }  
         }
 
         public static void Acasalar(Entidade entidade,Entidade par){

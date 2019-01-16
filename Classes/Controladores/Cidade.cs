@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.IO;
-using Cidadezinha.Classes.Instancias;
 using Cidadezinha.Classes.BancoDeDados;
 
 namespace Cidadezinha.Classes.Controladores
@@ -20,7 +17,6 @@ namespace Cidadezinha.Classes.Controladores
             ComidaTotal = 10;
             EnergiaTotal = 10;
         }
-
 
         public void CalcularGastos(){
 

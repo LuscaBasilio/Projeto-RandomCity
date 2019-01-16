@@ -8,7 +8,7 @@ namespace Cidadezinha.Classes.Enums
         Dia = 1, 
         Semana = 2,
         Mes = 3, 
-        Ano  = 4
+        Ano = 5
     } 
 
 }

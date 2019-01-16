@@ -29,7 +29,7 @@ namespace Cidadezinha.Classes.BancoDeDados
                 Populacao = new List<Pessoa>();
                 for (int i = 0; i < populacao; i++)
                 {
-                    Populacao.Add(new Pessoa(Populacao.Count+1));
+                    Populacao.Add(new Pessoa());
                 }
             }
         }
@@ -52,10 +52,12 @@ namespace Cidadezinha.Classes.BancoDeDados
         }
         
         public Pessoa BuscarPorId(int id){
-            Pessoa P = null;
-            return P;
+            return Populacao.Find(item => item.ID == id);
         }
+        
         public int Quantidade() => Populacao.Count(item => item.Vivo);
+
+        public List<Pessoa> PopulacaoViva() => Populacao.FindAll(item => item.Vivo);
 
     }
 }

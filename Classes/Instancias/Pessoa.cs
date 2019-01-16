@@ -4,7 +4,7 @@ using Cidadezinha.Classes.BancoDeDados;
 using Cidadezinha.Classes.Controladores;
 using Cidadezinha.Classes.Enums;
 using Cidadezinha.Classes.Profissão;
-using Cidadezinha.Classes.Geradores;
+using Cidadezinha.Classes.Views;
 
 namespace Cidadezinha.Classes.Instancias
 {
@@ -53,7 +53,7 @@ namespace Cidadezinha.Classes.Instancias
         }
         
         public int Felicidade{
-            private get{
+            get{
                 return felicidade;
             }
             set{
@@ -72,37 +72,35 @@ namespace Cidadezinha.Classes.Instancias
             get;
             set;
         }
-        
+        public int IDConjuge{
+            get;
+            private set;
+        }
         /// <summary>
         /// Todos os relacionamentos aqui da pessoa são salvos aqui  
         /// ID da pessoa/nivel de relacionamento
         /// </summary>
-        public Dictionary<int,int> Relacionamentos{
-            get;
-            private set;
-        }
+        private Dictionary<int,int> Relacionamentos;
         #endregion
 
         /// <summary>
         /// Cria uma pessoa na fase adulta com todos os atributos aleatorios  
         /// </summary>
-        public Pessoa(int ID) : base(Entidade.Entidades++){
+        public Pessoa() : base(Entidade.Entidades++){
             Random aleatorio = new Random();
             Nome = nomes.PegarAleatorio(this.Sexo_);
-            Sobrenome = nomes.PegarAleatorio();
-
-            Idade = aleatorio.Next(18,30);        
+            Sobrenome = nomes.PegarAleatorio();    
 
             //status
-            Fase_ = VerificarFase();
             Felicidade = aleatorio.Next(-100,100);
             Sorte = aleatorio.Next(-100,100);
             Conduta = aleatorio.Next(-100,100);
             Espectativa = aleatorio.Next(10,50);
-            Vivo = true;
             
             Profissao_ = null;
+            this.IDConjuge = -1;
 
+            Relacionamentos = new Dictionary<int, int>();
             //Feedback
             Acontecimentos.Nascimento(this);
         }
@@ -123,13 +121,14 @@ namespace Cidadezinha.Classes.Instancias
             this.Felicidade = 0;
             this.Sorte = 0;
             this.Conduta = 0;
-            this.Espectativa = rdm.Next(55,103);
+            this.Espectativa = rdm.Next(55,104);
             this.Profissao_ = null;
-            
-            this.Filhos = new List<int>();
+            this.IDConjuge = -1;
 
-            this.Relacionamentos[Pai.ID] = rdm.Next(0,100);
-            this.Relacionamentos[Mae.ID] = rdm.Next(0,100);
+            Relacionamentos = new Dictionary<int, int>();
+
+            this.AumentarRelacionamento(Pai.ID , rdm.Next(0,100));
+            this.AumentarRelacionamento(Mae.ID , rdm.Next(0,100));
 
             Acontecimentos.Nascimento(this);
         }
@@ -164,29 +163,100 @@ namespace Cidadezinha.Classes.Instancias
             }
             
         }
+
+        public void EfeitoDeInteracao(int valor){
+            Felicidade += valor / 10;
+
+            if(valor > 30) 
+                Espectativa ++;
+            else if(valor < -30)
+                Espectativa --;
+        }
+
+        public static void Interagir(Pessoa pessoa,Pessoa par){
+            Random rdm = new Random();
+            //variavel responsavel por verificar o relacionamento de ambos
+            string relacionamento = ValidacaoPessoa.VerificarRelacionamento(par,pessoa);
+
+            //verifica o nivel do relacionamento e retorna 2 valores possiveis como resultado da interação (valor minimo , valor maximo)
+            ValidacaoPessoa.VerificarInteracao(pessoa,par,out int valormin,out int valormax);
+
+            //variavel onde cria um nivel de interação (define o impacto dessa interação na relação dos 2 ;-; )
+            int nivelInteracao = rdm.Next(valormin,valormax);
+
+            //aumenta o relacionamento e a felicidade (ou diminiu .. tudo depende do nivelInteração)
+            pessoa.AumentarRelacionamento(par.ID,nivelInteracao);
+            pessoa.EfeitoDeInteracao(nivelInteracao);
+
+            par.AumentarRelacionamento(pessoa.ID,nivelInteracao);
+            par.EfeitoDeInteracao(nivelInteracao);
+            
+            //Verifica o relacionamento dos 2 e se nenum deles tem conjuge (traição nau ;-; )
+            if(relacionamento == "Conjuge" || (relacionamento == "Melhores Amigos" && !pessoa.TemConjuge() && !par.TemConjuge())){
+                if(rdm.Next(0,11) < 6){
+                    Pessoa.Acasalar(pessoa,par);
+                }
+            }
+            //Apenas mostra mensagem se houver alguma mudança
+            string newRelacionamento = ValidacaoPessoa.VerificarRelacionamento(par,pessoa);
+            if(newRelacionamento != relacionamento && newRelacionamento != "Desconhecidos"){
+                Acontecimentos.MostrarRelacionamento(pessoa,par,newRelacionamento);
+            }
+        }
+
         public static void Acasalar(Pessoa pessoa,Pessoa par){
             //RANDOM
             Random random = new Random();
             //crianço
             Pessoa Filho = null;
 
-            //DADOS da crianço
-            Sexo filhoGenero = random.Next(0,100) > 49 ? Sexo.Masculino:Sexo.Feminino ;           
-            string filhoNome = "";
+            //Chance de nascer uma criança
+            if(pessoa.Sexo_ != par.Sexo_){
+                if(random.Next(0,11) < 6){
+                    //DADOS da crianço
+                    Sexo filhoGenero = random.Next(0,101) > 49 ? Sexo.Masculino:Sexo.Feminino ;           
+                    string filhoNome = nomes.PegarAleatorio(filhoGenero);
 
-            Filho = new Pessoa(filhoNome,filhoGenero,pessoa,par);
+                    Pessoa pai = pessoa.Sexo_ == Sexo.Masculino? pessoa: par;
+                    Pessoa mae = pessoa.Equals(pai)?par:pessoa;
 
-            //aumenta o relacionamento da pessoa com o par e com o filho
-            pessoa.Relacionamentos[par.ID] += random.Next(0,100);
-            pessoa.Relacionamentos[Filho.ID] += random.Next(0,100);
-            //e vise versa
-            par.Relacionamentos[pessoa.ID] += random.Next(0,100);
-            par.Relacionamentos[Filho.ID] += random.Next(0,100);
+                    Filho = new Pessoa(filhoNome,filhoGenero,pai,mae);
 
-            //adiciona o id de crianças como filhos de cada um das pessoas
-            pessoa.Filhos.Add(Filho.ID);
-            par.Filhos.Add(Filho.ID);
+                    pai.AumentarRelacionamento(Filho.ID,random.Next(0,51));
+                    mae.AumentarRelacionamento(Filho.ID,random.Next(0,51));
+
+                    //adiciona o id de crianças como filhos de cada um das pessoas
+                    pessoa.Filhos.Add(Filho.ID);
+                    par.Filhos.Add(Filho.ID);
+
+                    Acontecimentos.Acasalar(pai,mae);
+                }
+            }
+            //aumenta o relacionamento da pessoa com o par
+            pessoa.Relacionamentos[par.ID] += random.Next(0,51);
+            par.Relacionamentos[pessoa.ID] += random.Next(0,51);
+            pessoa.IDConjuge = par.ID;
+            //e a felicidade
+            pessoa.EfeitoDeInteracao(random.Next(0,101));
+            par.EfeitoDeInteracao(random.Next(0,101));
+            par.IDConjuge = pessoa.ID;
+            
         }
+
+        public void AumentarRelacionamento(int ID,int valor){
+            if(!Relacionamentos.ContainsKey(ID))
+                Relacionamentos.Add(ID,valor);
+            else
+                Relacionamentos[ID] += valor;
+        }
+
+        public int VerRelacionamento(int ID){
+            if(!Relacionamentos.ContainsKey(ID))
+                return 0;
+            return Relacionamentos[ID];
+        }
+
+        public bool Conhece(int ID) => Relacionamentos.ContainsKey(ID);
 
         public override bool Equals(object obj)
         {
@@ -196,13 +266,30 @@ namespace Cidadezinha.Classes.Instancias
                 return true;  
             }
         }
-        
+
+        public bool TemConjuge(){
+            Pessoa conjuge = Cidade.Pessoas.BuscarPorId(IDConjuge);
+            if(conjuge != null){
+                if(!conjuge.Vivo){
+                    IDConjuge = -1;
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public bool Equals(Pessoa pessoa){
+            if(this.Sexo_ != pessoa.Sexo_ || this.Fase_ != pessoa.Fase_){
+                return false;
+            }else{
+                return true;
+            }
+        }
         
         public override int GetHashCode()
         {
             throw new MissingMethodException(";-;") ;
         }
-        
-
+    
     }
 }

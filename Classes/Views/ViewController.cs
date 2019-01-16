@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cidadezinha.Classes.Controladores;
 
 namespace Cidadezinha.Classes.Views
@@ -10,18 +11,25 @@ namespace Cidadezinha.Classes.Views
     /// </summary>
     public static class ViewController
     {
-        /// <summary>
-        /// Variavel onde ficara salva todas as informações dos acontecimentos em geral
-        /// </summary>
-        public static List<string> Resumo = new List<string>();
+
+        public static List<string> ResumoNascimentos = new List<string>();
+        public static List<string> ResumoAcontecimentos = new List<string>();
+        public static List<string> ResumoMortes = new List<string>();
 
         public static void MostrarAcontecimentos(){
-            foreach (string item in Resumo)
-            {
-                Console.WriteLine(item);
-            }
+            Mostrar(ref ResumoNascimentos);
+            Mostrar(ref ResumoAcontecimentos);
+            Mostrar(ref ResumoMortes);
+            
             Console.WriteLine("Data atual : " + Tempo.DataAtual.ToShortDateString() + "\n");
-            Resumo = new List<string>();
+        }
+
+        private static void Mostrar(ref List<string> acontecimentos){
+            if(acontecimentos.Count>0){
+                acontecimentos.ForEach(item => Console.WriteLine($"{item}"));
+                Console.WriteLine("");
+            }
+            acontecimentos = new List<string>();
         }
     }
 }

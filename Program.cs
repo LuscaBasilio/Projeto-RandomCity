@@ -10,9 +10,7 @@ namespace Cidadezinha
         static void Main(string[] args)
         {
             do{
-                Tempo.Envelhecer();
-                ViewController.MostrarAcontecimentos();
-                Tempo.PularTempo();
+                Tempo.Avancar();
                 Console.ReadKey();
             }while(Cidade.Pessoas.Quantidade() > 0);
         }
